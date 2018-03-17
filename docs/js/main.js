@@ -1,5 +1,6 @@
 document.getElementById('join').onclick = joinRoom;
 var init = false;
+
 var mediaConstraints = { 
     video:true,
     audio:true,
@@ -8,7 +9,7 @@ var mediaConstraints = {
 function joinRoom()
 {
     var roomId = document.getElementById('roomId').value;
-    window.mySocket = new WebSocket("ws://127.0.0.1:8080/ws"+'?'+"roomID="+roomId);
+    window.mySocket = new WebSocket("ws://0.0.0.0:8080/ws"+'?'+"roomID="+roomId);
 
     // Connection opened
     window.mySocket.addEventListener('open', function (event) {
