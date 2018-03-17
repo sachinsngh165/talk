@@ -1,0 +1,25 @@
+#remote {
+    width: 1080px;
+    height: 570px;
+    background: #e3e3e3;
+}
+
+#local {
+    width: 240px;
+    height: 144px;
+    background: #e3e3e3;
+}
+
+footer {
+    background: #222;
+    color: #ccc;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.container {
+    width: 90%;
+    margin: auto;
+}
