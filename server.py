@@ -1,12 +1,13 @@
 import sys
 
+
 from twisted.web.static import File
 from twisted.python import log
 from twisted.web.server import Site
-from twisted.internet import reactor
+from twisted.internet import reactor,ssl
 
 from autobahn.twisted.websocket import WebSocketServerFactory, \
-    WebSocketServerProtocol
+    WebSocketServerProtocol,listenWS
 
 from autobahn.twisted.resource import WebSocketResource
 
@@ -118,12 +119,16 @@ class ChatRouletteFactory(WebSocketServerFactory):
 if __name__ == "__main__":
     log.startLogging(sys.stdout)
 
+
+
     # static file server seving index.html as root
     root = File(".")
 
-    factory = ChatRouletteFactory(u"wss://0.0.0.0:8080")
+    factory = ChatRouletteFactory(u"ws://0.0.0.0:8080")
+
     factory.protocol = SomeServerProtocol
     resource = WebSocketResource(factory)
+
     # websockets resource on "/ws" path
     root.putChild(u"ws", resource)
 
