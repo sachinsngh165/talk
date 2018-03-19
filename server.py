@@ -121,17 +121,49 @@ if __name__ == "__main__":
 
 
 
-    # static file server seving index.html as root
-    root = File(".")
+    log.startLogging(sys.stdout)
 
-    factory = ChatRouletteFactory(u"ws://0.0.0.0:8080")
+    # SSL server context: load server key and certificate
+    # We use this for both WS and Web!
+    contextFactory = ssl.DefaultOpenSSLContextFactory('keys/server.key',
+                                                      'keys/server.crt')
+
+    factory = ChatRouletteFactory(u"wss://35.229.213.23:443")
+    # by default, allowedOrigins is "*" and will work fine out of the
+    # box, but we can do better and be more-explicit about what we
+    # allow. We are serving the Web content on 8080, but our WebSocket
+    # listener is on 9000 so the Origin sent by the browser will be
+    # from port 8080...
+
+
+    factory.setProtocolOptions(maxFramePayloadSize=1048576,
+                                     maxMessagePayloadSize=1048576,
+                                     autoFragmentSize=65536,
+                                     failByDrop=False,
+                                     openHandshakeTimeout=20.5,
+                                     closeHandshakeTimeout=10.,
+                                     tcpNoDelay=True,
+                                     autoPingInterval=10.,
+                                     autoPingTimeout=5.,
+                                     autoPingSize=4,
+                                     # perMessageCompressionOffers=offers,
+                                     # perMessageCompressionAccept=accept,
+                                     allowedOrigins=[
+                                         "https://35.229.213.23:443",
+                                        "https://127.0.0.1:8080",
+                                        "https://localhost:8080",
+        ],)
+
 
     factory.protocol = SomeServerProtocol
     resource = WebSocketResource(factory)
 
-    # websockets resource on "/ws" path
-    root.putChild(u"ws", resource)
 
-    site = Site(root)
-    reactor.listenTCP(8080, site)
+    webdir = File(".")
+    webdir.putChild(b"ws",resource)
+    webdir.contentTypes['.crt'] = 'application/x-x509-ca-cert'
+    web = Site(webdir)
+    reactor.listenSSL(443, web, contextFactory)
+
     reactor.run()
+
