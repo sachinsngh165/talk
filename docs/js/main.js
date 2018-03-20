@@ -5,7 +5,7 @@ var mediaConstraints = {
     video:true,
     audio:true,
    }
-
+$("#remote").css({"height":screen.height,"width":screen.width});
 function joinRoom()
 {
     var roomId = document.getElementById('roomId').value;
