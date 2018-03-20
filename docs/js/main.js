@@ -50,7 +50,11 @@ function initiate(){
 
 function connect(stream){
 
-    pc = RTCPeerConnection();
+    pc = RTCPeerConnection(configuration = {
+      'iceServers': [{
+        'urls': 'stun:stun.l.google.com:19302'
+      }]
+    });
 
 
     if(stream){
