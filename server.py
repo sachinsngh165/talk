@@ -125,10 +125,10 @@ if __name__ == "__main__":
 
     # SSL server context: load server key and certificate
     # We use this for both WS and Web!
-    contextFactory = ssl.DefaultOpenSSLContextFactory('keys/server.key',
-                                                      'keys/server.crt')
+    contextFactory = ssl.DefaultOpenSSLContextFactory('/etc/letsencrypt/live/sachinsingh.co.in/privkey.pem',
+                                                      '/etc/letsencrypt/live/sachinsingh.co.in/fullchain.pem')
 
-    factory = ChatRouletteFactory(u"wss://35.229.213.23:443")
+    factory = ChatRouletteFactory(u"wss://sachinsingh.co.in:443")
     # by default, allowedOrigins is "*" and will work fine out of the
     # box, but we can do better and be more-explicit about what we
     # allow. We are serving the Web content on 8080, but our WebSocket
@@ -151,6 +151,7 @@ if __name__ == "__main__":
                                      allowedOrigins=[
                                          "https://sachinsngh165.github.io:443",
                                          "https://sachinsngh165.github.io:80",
+                                         "https://sachinsingh.co.in:443",
                                          "https://35.229.213.23:443",
                                         "https://127.0.0.1:8080",
                                         "https://localhost:8080",
