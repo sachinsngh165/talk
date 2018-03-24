@@ -9,7 +9,7 @@ $("#remote").css({"height":screen.height,"width":screen.width});
 function joinRoom()
 {
     var roomId = document.getElementById('roomId').value;
-    window.mySocket = new WebSocket("wss://sachinsingh.co.in:443/ws"+"?"+"roomID="+roomId);
+    window.mySocket = new WebSocket("wss://sachinsingh.co.in:80"+"?"+"roomID="+roomId);
 
     // Connection opened
     window.mySocket.addEventListener('open', function (event) {

@@ -95,8 +95,8 @@ class ChatRouletteFactory(WebSocketServerFactory):
         try:
             rid = User2Room[client.peer]
             rooms[rid].removeUser(client.peer)
-            User2Room.pop(client.peer)
-            if rooms[rid].numberOfClients <=0:
+            User2Room.pop(client)
+            if rooms[rid].numberOfClients() <=0:
                 rooms.pop(rid)
         except:
             pass
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     contextFactory = ssl.DefaultOpenSSLContextFactory('/etc/letsencrypt/live/sachinsingh.co.in/privkey.pem',
                                                       '/etc/letsencrypt/live/sachinsingh.co.in/fullchain.pem')
 
-    factory = ChatRouletteFactory(u"wss://sachinsingh.co.in:443")
+    factory = ChatRouletteFactory(u"wss://sachinsingh.co.in:80")
     # by default, allowedOrigins is "*" and will work fine out of the
     # box, but we can do better and be more-explicit about what we
     # allow. We are serving the Web content on 8080, but our WebSocket
@@ -159,14 +159,14 @@ if __name__ == "__main__":
 
 
     factory.protocol = SomeServerProtocol
-    resource = WebSocketResource(factory)
+    #resource = WebSocketResource(factory)
+    listenWS(factory,contextFactory)
 
-
-    webdir = File(".")
-    webdir.putChild(b"ws",resource)
-    webdir.contentTypes['.crt'] = 'application/x-x509-ca-cert'
-    web = Site(webdir)
-    reactor.listenSSL(443, web, contextFactory)
+   # webdir = File(".")
+    #webdir.putChild(b"ws",resource)
+    #webdir.contentTypes['.crt'] = 'application/x-x509-ca-cert'
+    #web = Site(webdir)
+    #reactor.listenSSL(443, web, contextFactory)
 
     reactor.run()
 
