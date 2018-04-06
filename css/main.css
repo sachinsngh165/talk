@@ -1,7 +1,12 @@
-
+#remote{
+	width:720px;
+	height:480px;
+	background: #e3e3e3;
+}
 #local {
     width: 240px;
     height: 144px;
+    background: #e3e3e3;
 }
 
 footer {
@@ -14,6 +19,6 @@ footer {
 }
 
 .container {
-    width: 90%;
+    width: 85%;
     margin: auto;
 }

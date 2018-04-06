@@ -94,7 +94,7 @@ class ChatRouletteFactory(WebSocketServerFactory):
     def unregister(self, client):
         try:
             rid = User2Room[client.peer]
-            rooms[rid].removeUser(client.peer)
+            rooms[rid].removeUser(client)
             User2Room.pop(client)
             if rooms[rid].numberOfClients() <=0:
                 rooms.pop(rid)
