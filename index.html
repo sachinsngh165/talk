@@ -10,28 +10,19 @@
 
   </head>
   <body>
-    <nav class="navbar navbar-default">
-      <div class="container">
+    <nav class="navbar navbar-default" id="reg">
+      <div class="container" >
 	      <p>Room ID : <input type="text" id="roomId">
 	      <input type="submit" value="Join" id='join'></p>
 	      <p><a href="https://github.com/sachinsngh165/talk.git">Source Code</a></p>
       </div>
-  </nav>
+    </nav>
     <div class="container">
-	    <p id="response"></p>
-      <div class="videos">
+      <p id="response"></p>
+      <div class="video-container">
         <video id="remote" autoplay></video>
         <video id="local" autoplay muted></video>
       </div>
-      <br>
-      <h3>How to use: </h3>
-      <ul>
-	      <li>Enter a room id (it should be unique)</li>
-	      <li>Click join</li>
-	      <li>Share room id with friend and follow above two step</li>
-      </ul>
-      <p>Enjoy!</p>
-		   
     </div>
     <footer>
       <span id="status" class="small"></span>

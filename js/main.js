@@ -38,6 +38,7 @@ function joinRoom()
 }
 
 function initiate(){
+    $("#reg").css("display","none")
     navigator.mediaDevices.getUserMedia(mediaConstraints)
     .then(function(stream) {
         connect(stream)
