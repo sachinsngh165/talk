@@ -16,9 +16,10 @@ rooms = {}
 User2Room = {}
 
 class Room():
-    def __init__(self,roomId):
+    def __init__(self,roomId,password):
         self.roomId = roomId
         self.Clients = {}
+        self.password = password
 
     def addUser(self,client):
         print(client.peer + " added ")
@@ -42,6 +43,9 @@ class Room():
     def getAllClients(self):
         return self.Clients
 
+    def getPassword(self):
+        return self.password
+
 class SomeServerProtocol(WebSocketServerProtocol):
 
 
@@ -50,15 +54,21 @@ class SomeServerProtocol(WebSocketServerProtocol):
         if 'roomID' not in request.params :
             raise ConnectionDeny(403, reason=unicode("roomID required"))
         roomID = request.params['roomID'][0]
-    
+        if 'password' not in request.params:
+            raise ConnectionDeny(403, reason=unicode("password required"))
+
+        password = request.params['password'][0]
     
         if roomID not in rooms:
-            rooms[roomID]= Room(roomID)
+            rooms[roomID]= Room(roomID,password)
             room = rooms[roomID]
             User2Room[request.peer] = roomID
             print(roomID + " room created ")
         else:
 			room = rooms[roomID]
+            if password != room.getPassword():
+                raise ConnectionDeny(403, reason=unicode("! incorrect password"))
+
 			User2Room[request.peer] = roomID
             
         

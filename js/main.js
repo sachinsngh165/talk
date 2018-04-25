@@ -9,7 +9,8 @@ var mediaConstraints = {
 function joinRoom()
 {
     var roomId = document.getElementById('roomId').value;
-    window.mySocket = new WebSocket("wss://sachinsingh.co.in:80"+"?"+"roomID="+roomId);
+    var password = document.getElementById('password').value;
+    window.mySocket = new WebSocket("wss://sachinsingh.co.in:80"+"?"+"roomID="+roomId+"&"+"password="+password);
 
     // Connection opened
     window.mySocket.addEventListener('open', function (event) {
