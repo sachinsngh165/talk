@@ -65,11 +65,11 @@ class SomeServerProtocol(WebSocketServerProtocol):
             User2Room[request.peer] = roomID
             print(roomID + " room created ")
         else:
-			room = rooms[roomID]
-            if password != room.getPassword():
+            room = rooms[roomID]
+            if password:
                 raise ConnectionDeny(403, reason=unicode("! incorrect password"))
 
-			User2Room[request.peer] = roomID
+            User2Room[request.peer] = roomID
             
         
     def onOpen(self):
