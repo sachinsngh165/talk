@@ -140,7 +140,7 @@ if __name__ == "__main__":
 
     factory.protocol = SomeServerProtocol
     listenWS(factory)
-    webdir = File("./client")
+    webdir = File("./docs")
     web = Site(webdir)
     reactor.listenTCP(9000, web)
     reactor.run()
