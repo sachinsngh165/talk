@@ -56,9 +56,7 @@ class SomeServerProtocol(WebSocketServerProtocol):
         roomID = request.params['roomID'][0]
         if 'password' not in request.params:
             raise ConnectionDeny(403, reason=unicode("password required"))
-
         password = request.params['password'][0]
-    
         if roomID not in rooms:
             rooms[roomID]= Room(roomID,password)
             room = rooms[roomID]
@@ -66,11 +64,9 @@ class SomeServerProtocol(WebSocketServerProtocol):
             print(roomID + " room created ")
         else:
             room = rooms[roomID]
-            if password:
+            if password != room.getPassword():
                 raise ConnectionDeny(403, reason=unicode("! incorrect password"))
-
             User2Room[request.peer] = roomID
-            
         
     def onOpen(self):
         self.factory.register(self)
@@ -82,8 +78,6 @@ class SomeServerProtocol(WebSocketServerProtocol):
 
     def onMessage(self, payload, isBinary):
         self.factory.communicate(self, payload, isBinary)
-
-
 
 class ChatRouletteFactory(WebSocketServerFactory):
     def __init__(self, *args, **kwargs):
@@ -128,55 +122,26 @@ class ChatRouletteFactory(WebSocketServerFactory):
 
 if __name__ == "__main__":
     log.startLogging(sys.stdout)
-
-
-
-    log.startLogging(sys.stdout)
-
-    # SSL server context: load server key and certificate
-    # We use this for both WS and Web!
-    contextFactory = ssl.DefaultOpenSSLContextFactory('/etc/letsencrypt/live/sachinsingh.co.in/privkey.pem',
-                                                      '/etc/letsencrypt/live/sachinsingh.co.in/fullchain.pem')
-
-    factory = ChatRouletteFactory(u"wss://sachinsingh.co.in:80")
-    # by default, allowedOrigins is "*" and will work fine out of the
-    # box, but we can do better and be more-explicit about what we
-    # allow. We are serving the Web content on 8080, but our WebSocket
-    # listener is on 9000 so the Origin sent by the browser will be
-    # from port 8080...
-
-
+    factory = ChatRouletteFactory("ws://localhost:8080")
     factory.setProtocolOptions(maxFramePayloadSize=1048576,
                                      maxMessagePayloadSize=1048576,
                                      autoFragmentSize=65536,
                                      failByDrop=False,
-                                     openHandshakeTimeout=20.5,
-                                     closeHandshakeTimeout=10.,
+                                     openHandshakeTimeout=2.5,
+                                     closeHandshakeTimeout=1.,
                                      tcpNoDelay=True,
-                                     autoPingInterval=10.,
-                                     autoPingTimeout=5.,
+                                     autoPingInterval=1.,
+                                     autoPingTimeout=1.,
                                      autoPingSize=4,
-                                     # perMessageCompressionOffers=offers,
-                                     # perMessageCompressionAccept=accept,
                                      allowedOrigins=[
-                                         "https://sachinsngh165.github.io:443",
-                                         "https://sachinsngh165.github.io:80",
-                                         "https://sachinsingh.co.in:443",
-                                         "https://35.229.213.23:443",
-                                        "https://127.0.0.1:8080",
-                                        "https://localhost:8080",
-        ],)
-
+                                    "*",
+                                    ],
+                                )
 
     factory.protocol = SomeServerProtocol
-    #resource = WebSocketResource(factory)
-    listenWS(factory,contextFactory)
-
-   # webdir = File(".")
-    #webdir.putChild(b"ws",resource)
-    #webdir.contentTypes['.crt'] = 'application/x-x509-ca-cert'
-    #web = Site(webdir)
-    #reactor.listenSSL(443, web, contextFactory)
-
+    listenWS(factory)
+    webdir = File("./client")
+    web = Site(webdir)
+    reactor.listenTCP(9000, web)
     reactor.run()
 
