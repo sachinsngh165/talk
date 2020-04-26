@@ -9,3 +9,13 @@ Usage:
 - Click join
 - Share room id with friend and follow above two step
 Enjoy!
+
+References:
+- https://linuxconfig.org/how-to-setup-nginx-reverse-proxy
+- https://onepagezen.com/letsencrypt-auto-renew-certbot-apache/
+- https://www.nginx.com/blog/setting-up-nginx/
+- https://medium.com/@ThomasTan/installing-nginx-in-mac-os-x-maverick-with-homebrew-d8867b7e8a5a
+- https://www.freecodecamp.org/news/how-to-get-https-working-on-your-local-development-environment-in-5-minutes-7af615770eec/
+- https://en.wikipedia.org/wiki/X.509
+- https://stackoverflow.com/questions/4811738/how-to-log-cron-jobs
+
