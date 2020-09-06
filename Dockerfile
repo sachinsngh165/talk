@@ -1,6 +1,7 @@
 FROM python:2
 RUN pip install virtualenv
-ADD . .
 RUN virtualenv venv 
+COPY server.py server.py
+COPY requirments.txt requirments.txt
 RUN /venv/bin/pip install -r requirments.txt
-CMD ["/venv/bin/python", "server.py"]
+ENTRYPOINT ["/venv/bin/python", "server.py"]

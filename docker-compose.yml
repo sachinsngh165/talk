@@ -2,7 +2,24 @@ version: '3'
 services:
     python_server:
         build:
-            context: ./
+            context: .
+        volumes:
+            - ./docs:/docs
         ports:
-            - 8080:8080
+            - 80:80
             - 9000:9000
+        depends_on:
+            - nginx_proxy
+
+    nginx_proxy:
+        image: nginx:alpine
+        env_file: .env
+        ports:
+            - 68:68
+            - 443:443
+        volumes:
+            - ./nginx/nginx.conf:/etc/nginx/templates/nginx.conf.template
+            - ${SSL_CERT}:/etc/nginx/fullchain.pem
+            - ${SSL_KEY}:/etc/nginx/keychain.pem
+            - ./entrypoint.sh:/entrypoint.sh
+        entrypoint: ["./entrypoint.sh"]
