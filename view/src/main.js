@@ -1,4 +1,3 @@
-document.getElementById('join').onclick = joinRoom;
 var init = false;
 
 var mediaConstraints = { 
@@ -6,7 +5,7 @@ var mediaConstraints = {
     audio:true,
    }
 //$("#remote").css({"height":screen.height,"width":screen.width});
-function joinRoom()
+export const joinRoom = function joinRoom()
 {
     var roomId = document.getElementById('roomId').value;
     var password = document.getElementById('password').value;
@@ -20,7 +19,7 @@ function joinRoom()
                 log("You've successfully joined !")
                 init = true;
                 initiate()
-            }else if(event.data=='not initiator'){
+            }else if(event.data === 'not initiator'){
                 log("You've successfully joined !")
                 init = false;
                 initiate()
@@ -39,7 +38,7 @@ function joinRoom()
 }
 
 function initiate(){
-    $("#reg").css("display","none")
+    // $("#reg").css("display","none")
     navigator.mediaDevices.getUserMedia(mediaConstraints)
     .then(function(stream) {
         connect(stream)
@@ -52,7 +51,7 @@ function initiate(){
 
 function connect(stream){
 
-    pc = RTCPeerConnection(configuration = {
+    var pc = new RTCPeerConnection({
       'iceServers': [{
         'urls': 'stun:stun.l.google.com:19302'
       }]
@@ -133,6 +132,6 @@ function connect(stream){
 }
 
 function log() {
-    $('#status').text(Array.prototype.join.call(arguments, ' '));
+    // $('#status').text(Array.prototype.join.call(arguments, ' '));
     console.log.apply(console, arguments);
 }

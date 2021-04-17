@@ -50,7 +50,6 @@ class SomeServerProtocol(WebSocketServerProtocol):
 
 
     def onConnect(self, request):
-        print(request.params)
         if 'roomID' not in request.params :
             raise ConnectionDeny(403, reason=unicode("roomID required"))
         roomID = request.params['roomID'][0]
@@ -107,7 +106,6 @@ class ChatRouletteFactory(WebSocketServerFactory):
 
 
     def communicate(self, client, payload, isBinary):
-    	print(payload)
         rid = User2Room[client.peer]
         room = rooms[rid]
         partners = room.getAllClients()
@@ -122,7 +120,7 @@ class ChatRouletteFactory(WebSocketServerFactory):
 
 if __name__ == "__main__":
     log.startLogging(sys.stdout)
-    factory = ChatRouletteFactory("ws://localhost:8080")
+    factory = ChatRouletteFactory("ws://localhost:80")
     factory.setProtocolOptions(maxFramePayloadSize=1048576,
                                      maxMessagePayloadSize=1048576,
                                      autoFragmentSize=65536,

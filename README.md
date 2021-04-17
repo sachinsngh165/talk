@@ -10,6 +10,8 @@ Usage:
 - Share room id with friend and follow above two step
 Enjoy!
 
+> NOTE: This project just demonstrate the working of WebRTC. Security concerns are ignored & are in TODO list.
+
 References:
 - https://linuxconfig.org/how-to-setup-nginx-reverse-proxy
 - https://onepagezen.com/letsencrypt-auto-renew-certbot-apache/
